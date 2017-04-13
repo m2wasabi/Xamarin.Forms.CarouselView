@@ -484,11 +484,15 @@ namespace Xamarin.Forms.Platform
 					onDragStart: () => { },
 					onDragEnd: () => {
 						var velocity = _physicalLayout.Velocity;
+						var viewport = _physicalLayout.Viewport;
 
 						var target = velocity.X > 0 ?
 							_physicalLayout.VisiblePositions().Max() :
 							_physicalLayout.VisiblePositions().Min();
-						_physicalLayout.ScrollToPosition(target);
+						if (Math.Abs(velocity.X) > (viewport.Width / 10) && Math.Abs(velocity.X) > Math.Abs(velocity.Y))
+						{
+							_physicalLayout.ScrollToPosition(target);
+						}
 					},
 					onScrollSettled: () => {
 						var visiblePositions = _physicalLayout.VisiblePositions().ToArray();
